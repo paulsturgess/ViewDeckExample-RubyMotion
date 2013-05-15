@@ -21,9 +21,8 @@ class AppDelegate
     self.window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     self.leftController = LeftViewController.alloc.init
     rightController = RightViewController.alloc.init
-    centerController = ViewController.alloc.init
-    self.centerController = UINavigationController.alloc.initWithRootViewController(centerController)
-    deckController = IIViewDeckController.alloc.initWithCenterViewController(centerController,
+    self.centerController = UINavigationController.alloc.initWithRootViewController(ViewController.alloc.init)
+    deckController = IIViewDeckController.alloc.initWithCenterViewController(self.centerController,
                                                                               leftViewController: leftController,
                                                                               rightViewController: rightController
                                                                             )
