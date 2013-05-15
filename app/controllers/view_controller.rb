@@ -5,7 +5,6 @@ class ViewController < UITableViewController
   # - (void)viewDidLoad
   # {
   #     [super viewDidLoad];
-
   #     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"left" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleLeftView)];
   #     if ([self.navigationItem respondsToSelector:@selector(leftBarButtonItems)]) {
   #         self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:
@@ -26,21 +25,20 @@ class ViewController < UITableViewController
   #         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"right" style:UIBarButtonItemStyleBordered target:self.viewDeckController action:@selector(toggleRightView)];
   #     }
   # }
-
   def viewDidLoad
     super
-    self.navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithTitle(
+    navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithTitle(
                                               "left",
                                               style: UIBarButtonItemStyleBordered,
-                                              target: self.viewDeckController,
+                                              target: viewDeckController,
                                               action: 'toggleLeftView'
                                             )
-    if self.navigationItem.respond_to?(:leftBarButtonItems)
-      self.navigationItem.leftBarButtonItems = [
+    if navigationItem.respond_to?(:leftBarButtonItems)
+      navigationItem.leftBarButtonItems = [
         UIBarButtonItem.alloc.initWithTitle(
           "left",
           style: UIBarButtonItemStyleBordered,
-          target: self.viewDeckController,
+          target: viewDeckController,
           action: 'toggleLeftView'
         ),
         UIBarButtonItem.alloc.initWithTitle(
@@ -51,20 +49,20 @@ class ViewController < UITableViewController
         )
       ]
     else
-      self.navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithTitle(
+      navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithTitle(
         "left",
         style: UIBarButtonItemStyleBordered,
-        target: self.viewDeckController,
+        target: viewDeckController,
         action: 'toggleLeftView'
       )
     end
 
-    if self.navigationItem.respond_to?(:rightBarButtonItems)
-      self.navigationItem.rightBarButtonItems = [
+    if navigationItem.respond_to?(:rightBarButtonItems)
+      navigationItem.rightBarButtonItems = [
         UIBarButtonItem.alloc.initWithTitle(
           "right",
           style: UIBarButtonItemStyleBordered,
-          target: self.viewDeckController,
+          target: viewDeckController,
           action: 'toggleRightView'
         ),
         UIBarButtonItem.alloc.initWithTitle(
@@ -75,10 +73,10 @@ class ViewController < UITableViewController
         )
       ]
     else
-      self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle(
+      navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle(
         "right",
         style: UIBarButtonItemStyleBordered,
-        target: self.viewDeckController,
+        target: viewDeckController,
         action: 'toggleRightView'
       )
     end
@@ -91,7 +89,7 @@ class ViewController < UITableViewController
   # }
   def viewWillAppear(animated)
     super
-    self.viewDeckController.openLeftViewAnimated(false)
+    viewDeckController.openLeftViewAnimated(false)
   end
 
   # - (void)viewDidAppear:(BOOL)animated
@@ -101,35 +99,35 @@ class ViewController < UITableViewController
   # }
   def viewDidAppear(animated)
     super
-    self.viewDeckController.closeLeftViewAnimated(true)
+    viewDeckController.closeLeftViewAnimated(true)
   end
 
   # - (void)previewBounceLeftView {
   #     [self.viewDeckController previewBounceView:IIViewDeckLeftSide];
   # }
   def previewBounceLeftView
-    self.viewDeckController.previewBounceView(IIViewDeckLeftSide)
+    viewDeckController.previewBounceView(IIViewDeckLeftSide)
   end
 
   # - (void)previewBounceRightView {
   #     [self.viewDeckController previewBounceView:IIViewDeckRightSide];
   # }
   def previewBounceRightView
-    self.viewDeckController.previewBounceView(IIViewDeckRightSide)
+    viewDeckController.previewBounceView(IIViewDeckRightSide)
   end
 
   # - (void)previewBounceTopView {
   #     [self.viewDeckController previewBounceView:IIViewDeckTopSide];
   # }
   def previewBounceTopView
-    self.viewDeckController.previewBounceView(IIViewDeckTopSide)
+    viewDeckController.previewBounceView(IIViewDeckTopSide)
   end
 
   # - (void)previewBounceBottomView {
   #     [self.viewDeckController previewBounceView:IIViewDeckBottomSide];
   # }
   def previewBounceBottomView
-    self.viewDeckController.previewBounceView(IIViewDeckBottomSide)
+    viewDeckController.previewBounceView(IIViewDeckBottomSide)
   end
 
   # - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -152,7 +150,7 @@ class ViewController < UITableViewController
   #     return !section ? @"Left" : @"Right";
   # }
   def tableView(tableView, titleForHeaderInSection: section)
-    !section ? "Left" : "Right"
+    section == 0 ? "left" : "right"
   end
 
   # - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -170,28 +168,26 @@ class ViewController < UITableViewController
     cellIdentifier = "Cell"
     cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
     cell ||= UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: cellIdentifier)
-    cell.textLabel.textAlignment = indexPath.section ? UITextAlignmentRight : UITextAlignmentLeft
+    cell.textLabel.textAlignment = indexPath.section == 0 ? UITextAlignmentLeft : UITextAlignmentRight
     cell.textLabel.text = "ledge: #{indexPath.row*44}"
     cell
   end
 
 
-  # #pragma mark - Table view delegate
-
-  # # - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-  # # {
-  # #     if (!indexPath.section) {
-  # #         self.viewDeckController.leftSize = MAX(indexPath.row*44,10);
-  # #     }
-  # #     else {
-  # #         self.viewDeckController.rightSize = MAX(indexPath.row*44,10);
-  # #     }
-  # # }
+  # - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+  # {
+  #     if (!indexPath.section) {
+  #         self.viewDeckController.leftSize = MAX(indexPath.row*44,10);
+  #     }
+  #     else {
+  #         self.viewDeckController.rightSize = MAX(indexPath.row*44,10);
+  #     }
+  # }
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
-    if !indexPath.section
-      self.viewDeckController.leftSize = [indexPath.row*44, 10].max
+    if indexPath.section == 0
+      viewDeckController.leftSize = [indexPath.row*44, 10].max
     else
-      self.viewDeckController.rightSize = [indexPath.row*44, 10].max
+      viewDeckController.rightSize = [indexPath.row*44, 10].max
     end
   end
 

@@ -12,16 +12,9 @@ class AppDelegate
                                                                               leftViewController: self.leftController,
                                                                               rightViewController: rightController
                                                                             )
-
     deckController.rightSize = 100
-
-    # To adjust speed of open/close animations, set either of these two properties.
-    # @deckController.openSlideAnimationDuration = 0.15
-    # @deckController.closeSlideAnimationDuration = 0.5
-
     self.window.rootViewController = deckController
     self.window.makeKeyAndVisible
-
     true
   end
 end

@@ -2,12 +2,7 @@ class LeftViewController < UITableViewController
 
   def viewDidLoad
     super
-    self.tableView.scrollsToTop = false
-    # Uncomment the following line to preserve selection between presentations.
-    # self.clearsSelectionOnViewWillAppear = false
-
-    # Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    # self.navigationItem.rightBarButtonItem = self.editButtonItem
+    tableView.scrollsToTop = false
   end
 
   # - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -31,18 +26,16 @@ class LeftViewController < UITableViewController
   #     return section > 0 ? [NSString stringWithFormat:@"%d", section-1] : nil;
   # }
   def tableView(tableView, titleForHeaderInSection: section)
-    #section
+    section.to_s
   end
 
   # - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
   # {
   #     static NSString *CellIdentifier = @"Cell";
-
   #     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
   #     if (cell == nil) {
   #         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   #     }
-
   #     if (indexPath.section == 0) {
   #         cell.accessoryType = UITableViewCellAccessoryNone;
   #         cell.textLabel.text = @"Switch to right";
@@ -67,9 +60,6 @@ class LeftViewController < UITableViewController
     cell
   end
 
-
-  #pragma mark - Table view delegate
-
   # - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
   # {
   #     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -88,7 +78,6 @@ class LeftViewController < UITableViewController
   #         [NSThread sleepForTimeInterval:(300+arc4random()%700)/1000000.0]; // mimic delay... not really necessary
   #     }];
   # }
-
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
     if indexPath.section == 0

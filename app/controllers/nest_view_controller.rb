@@ -1,6 +1,6 @@
 class NestViewController < UIViewController
 
-  attr_accessor :level, :levelLabel
+  attr_accessor :level
 
   # - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
   # {
@@ -13,7 +13,7 @@ class NestViewController < UIViewController
   def initWithNibName(nibNameorNil, bundle:nibBundleorNil)
     super
     self.tap do
-      self.try(:level=, 0)
+      self.level = 0 if self
     end
   end
 
@@ -24,48 +24,52 @@ class NestViewController < UIViewController
   # }
   def viewDidLoad
     super
-    self.levelLabel.text = "Level #{self.level}"
+    view.backgroundColor = UIColor.whiteColor
+    levelLabel.text = "Level #{self.level}"
+    view.addSubview(levelLabel)
+    view.addSubview(goDeeperButton)
   end
 
-  # - (void)viewWillAppear:(BOOL)animated {
-  #     [super viewWillAppear:animated];
-  #     if (self.level == 1) {
-  #         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-  #         self.viewDeckController.view.frame = [[UIScreen mainScreen] applicationFrame];
-  #         [self.viewDeckController.view setNeedsDisplay]; // .frame = self.viewDeckController.view.bounds;
-  #     }
-  # }
-  def viewWillAppear(animated)
-    super
-    if self.level == 1
-      UIApplication.sharedApplication.setStatusBarHidden(true, withAnimation: UIStatusBarAnimationNone)
-      self.viewDeckController.view.frame = UIScreen.mainScreen.applicationFrame
-      self.viewDeckController.view.setNeedsDisplay
-    end
+  def levelLabel
+    return @levelLabel if @levelLabel
+    @levelLabel = UILabel.alloc.initWithFrame(CGRectZero)
+    @levelLabel.font = UIFont.systemFontOfSize(28)
+    @levelLabel.text = "Label"
+    @levelLabel.textColor = UIColor.blackColor
+    @levelLabel.backgroundColor = UIColor.whiteColor
+    @levelLabel.sizeToFit
+    @levelLabel.frame = [
+      [20, 20],
+      [280, 27]
+    ]
+    @levelLabel
   end
 
-  # - (void)viewDidDisappear:(BOOL)animated {
-  #     [super viewDidDisappear:animated];
-  #     if (self.level == 1) {
-  #         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-  #         self.viewDeckController.view.frame = [[UIScreen mainScreen] applicationFrame];
-  #         [self.viewDeckController.view setNeedsDisplay]; // .frame = self.viewDeckController.view.bounds;
-  #     }
-  # }
-  def viewDidDisappear(animated)
-    super
-    if self.level == 1
-      UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation: UIStatusBarAnimationNone)
-      self.viewDeckController.view.frame = UIScreen.mainScreen.applicationFrame
-      self.viewDeckController.view.setNeedsDisplay
-    end
+  def goDeeperButton
+    return @goDeeperButton if @goDeeperButton
+    @goDeeperButton = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    @goDeeperButton.setTitle("Go deeper", forState:UIControlStateNormal)
+    @goDeeperButton.sizeToFit
+    @goDeeperButton.frame = CGRect.new(
+      [20, levelLabel.frame.origin.y + levelLabel.frame.size.height + 5],
+      [173, 37]
+    )
+    @goDeeperButton.addTarget(
+      self,
+      action: "pressedGoDeeper",
+      forControlEvents:UIControlEventTouchUpInside
+    )
+    @goDeeperButton
   end
 
   # - (void)hideOrShow {
   #     [[UIApplication sharedApplication] setStatusBarHidden:![UIApplication sharedApplication].isStatusBarHidden withAnimation:UIStatusBarAnimationSlide];
   # }
   def hideOrShow
-    UIApplication.sharedApplication.setStatusBarHidden(!UIApplication.sharedApplication.isStatusBarHidden, withAnimation: UIStatusBarAnimationSlide)
+    UIApplication.sharedApplication.setStatusBarHidden(
+      !UIApplication.sharedApplication.isStatusBarHidden,
+      withAnimation: UIStatusBarAnimationSlide
+    )
   end
 
   # - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -82,9 +86,10 @@ class NestViewController < UIViewController
   #     nestController.level = self.level + 1;
   #     [self.navigationController pushViewController:nestController animated:YES];
   # }
-  def pressedGoDeeper(sender)
-    nestController = NestViewController.alloc.initWithNibName("NestViewController", bundle: nil)
-    self.navigationController.pushViewController(nestController, animated:true)
+  def pressedGoDeeper
+    nestController = NestViewController.alloc.initWithNibName(nil, bundle: nil)
+    nestController.level = level + 1
+    navigationController.pushViewController(nestController, animated:true)
   end
 
 end
