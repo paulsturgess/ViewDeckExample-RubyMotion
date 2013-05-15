@@ -17,7 +17,11 @@ popular by the Facebook iOS app.
 
 I've left the original Objective-C implementation as comments in the code.
 
-It's not 100% the same, as parts of the interface in the original example app
-were implemented via Interface Builder. I've implemented those parts directly
-in the appropriate controllers. Essentially all new methods are where there
-isn't a corresponding Objective-C comment above.
+It's not 100% the same as parts of the interface, in the original example app,
+were implemented using Interface Builder.
+
+For example, all the layout and buttons used in the RightViewController are
+coded manually, whereas the original example app used a Nib file.
+
+Essentially all new methods I have introduced, will not have a corresponding
+Objective-C comment.

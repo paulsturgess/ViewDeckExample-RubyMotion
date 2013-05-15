@@ -1,6 +1,6 @@
 class AppDelegate
 
-  attr_accessor :window, :centerController, :leftController, :imageController
+  attr_accessor :window, :centerController, :leftController
 
   # - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
   # {

@@ -1,7 +1,5 @@
 class ViewController < UITableViewController
 
-  attr_accessor :popoverController
-
   # - (void)viewDidLoad
   # {
   #     [super viewDidLoad];
